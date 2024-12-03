@@ -3,7 +3,7 @@ from apps.flowers.models import Flower
 
 
 class FlowerFilter(filters.FilterSet):
-    name = filters.CharFilter(field_name="name", lookup_expr="icontains")
+    name = filters.CharFilter(field_name="translations__name", lookup_expr="icontains")
     category = filters.BaseInFilter(field_name="category__id", lookup_expr="in")
     package = filters.CharFilter(field_name="package__name", lookup_expr="icontains")
     size = filters.CharFilter(field_name="flower_size__name", lookup_expr="icontains")
