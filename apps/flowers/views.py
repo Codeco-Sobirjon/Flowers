@@ -427,3 +427,14 @@ class ViewUsertoFlowerListView(APIView):
         serializer = ViewUsertoFlowerSerializer(queryset, many=True, context={'request': request})
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ViewUsertosFlowerListView(APIView):
+
+    @swagger_auto_schema(
+        operation_summary="Retrieve a list of flowers viewed by the user",
+        operation_description="Fetch a list of all the flowers that the authenticated user has viewed.",
+        tags=["Deployment"]
+    )
+    def get(self, request):
+        return Response([], status=status.HTTP_200_OK)
