@@ -429,14 +429,4 @@ class ViewUsertoFlowerListView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class DeployListView(APIView):
-
-    @swagger_auto_schema(
-        operation_summary="",
-        operation_description="",
-        tags=["Deployment"]
-    )
-    def get(self, request):
-        return Response([], status=status.HTTP_200_OK)
-
 
