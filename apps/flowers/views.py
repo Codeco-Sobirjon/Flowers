@@ -429,7 +429,7 @@ class ViewUsertoFlowerListView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class ViewUsertosFlowerListView(APIView):
+class DeployListView(APIView):
 
     @swagger_auto_schema(
         operation_summary="",
