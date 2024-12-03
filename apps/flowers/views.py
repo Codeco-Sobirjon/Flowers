@@ -432,9 +432,11 @@ class ViewUsertoFlowerListView(APIView):
 class ViewUsertosFlowerListView(APIView):
 
     @swagger_auto_schema(
-        operation_summary="Retrieve a list of flowers viewed by the user",
-        operation_description="Fetch a list of all the flowers that the authenticated user has viewed.",
+        operation_summary="",
+        operation_description="",
         tags=["Deployment"]
     )
     def get(self, request):
         return Response([], status=status.HTTP_200_OK)
+
+
