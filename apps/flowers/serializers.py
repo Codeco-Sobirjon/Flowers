@@ -206,28 +206,28 @@ class FlowerDetailSerializer(TranslatableModelSerializer):
         queryset = SizesofFlower.objects.select_related('flower').filter(
             flower=obj.id
         )
-        serializer = SizesofFlowerSerializer(queryset, many=True)
+        serializer = SizesofFlowerSerializer(queryset, many=True, context={"request": self.context.get('request')})
         return serializer.data
 
     def get_quantity_of_flower(self, obj):
         queryset = QuantityofFlower.objects.select_related('flower').filter(
             flower=obj.id
         )
-        serializer = QuantityofFlowerSerializer(queryset, many=True)
+        serializer = QuantityofFlowerSerializer(queryset, many=True, context={"request": self.context.get('request')})
         return serializer.data
 
     def get_compound(self, obj):
         queryset = CompoundyofFlower.objects.select_related('flower').filter(
             flower=obj.id
         )
-        serializer = CompoundyofFlowerSerializer(queryset, many=True)
+        serializer = CompoundyofFlowerSerializer(queryset, many=True, context={"request": self.context.get('request')})
         return serializer.data
 
     def get_review(self, obj):
         queryset = Review.objects.select_related('flower').filter(
             flower=obj.id
         )
-        serializer = ReviewListSerializer(queryset, many=True)
+        serializer = ReviewListSerializer(queryset, many=True, context={"request": self.context.get('request')})
         return serializer.data
 
     def get_like(self, obj):
