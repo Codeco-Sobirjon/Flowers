@@ -134,6 +134,18 @@ class StatisticsFlower(APIView):
             orders_today = orders_today.filter(flower_id=flower_id)
         return self.get_flower_data(orders_today)
 
+    def get_month_statistics(self, today, flower_id=None):
+        orders_this_month = OrderFlowers.objects.filter(
+            created_at__month=today.month, created_at__year=today.year
+        )
+        if flower_id:
+            orders_this_month = orders_this_month.filter(flower_id=flower_id)
+        month_name = today.strftime('%B')
+        return [{
+            'month_name': month_name,
+            'statistics': self.get_flower_data(orders_this_month),
+        }]
+
     def get_six_month_statistics(self, today, flower_id=None):
         six_months_ago = today - timedelta(days=180)
         orders_last_six_months = OrderFlowers.objects.filter(created_at__gte=six_months_ago)
