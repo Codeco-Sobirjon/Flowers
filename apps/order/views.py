@@ -50,6 +50,8 @@ class StatusDeliverListAPIView(APIView):
 
 class PlacingOrderCreateAPIView(APIView):
 
+    permission_classes = [IsAuthenticated]
+
     @swagger_auto_schema(
         operation_description="Create a new placing order",
         request_body=PlacingOrderCreateSerializer,
@@ -75,7 +77,7 @@ class PlacingOrderCreateAPIView(APIView):
 
 
 class StatisticsFlower(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_summary="List Flower Statistics with Token",
@@ -168,7 +170,7 @@ class StatisticsFlower(APIView):
 
 
 class StatisticsByMonths(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         tags=["Flower Statistics"],
