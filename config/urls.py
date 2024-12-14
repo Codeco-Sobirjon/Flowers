@@ -32,8 +32,9 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('api/vv1/account/', include('apps.account.urls')),
-    path('api/vv1/flower/', include('apps.flowers.urls')),
+    path('api/v1/account/', include('apps.account.urls')),
+    path('api/v1/flower/', include('apps.flowers.urls')),
+    path('api/v1/order/', include('apps.order.urls')),
 ]
 
 

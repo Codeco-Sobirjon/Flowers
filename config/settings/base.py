@@ -22,6 +22,7 @@ ALLOWED_HOSTS = ['*']
 LOCAL_APPS = [
     'apps.account',
     'apps.flowers',
+    'apps.order',
 ]
 
 THIRD_PARTY_APPS = [
