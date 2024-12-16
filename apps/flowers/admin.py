@@ -3,7 +3,7 @@ from parler.admin import TranslatableAdmin
 from apps.flowers.models import (
     SizesofFlower, ImagesofFlower, QuantityofFlower,
     Flower, TopLevelCategory, Category, Review, CompoundyofFlower, PackageFlower,
-    CountryFlower, LiketoFlower, ViewUsertoFlower
+    CountryFlower, LiketoFlower, ViewUsertoFlower, Balloon, ImagesofBalloon
 )
 
 
@@ -43,6 +43,19 @@ class LiketoFlowerInline(admin.TabularInline):
 class ViewUsertoFlowerInline(admin.TabularInline):
     model = ViewUsertoFlower
     extra = 1
+
+
+class BalloonImageInline(admin.TabularInline):
+    model = ImagesofBalloon
+    extra = 1
+
+
+@admin.register(Balloon)
+class BalloonAdmin(TranslatableAdmin):
+    list_display = ('name', 'price', 'discount_price', 'in_stock', 'category', 'author')
+    list_filter = ('in_stock', 'category', 'author')
+    search_fields = ('name', 'category__name', 'author__phone')
+    inlines = [BalloonImageInline]
 
 
 @admin.register(Flower)

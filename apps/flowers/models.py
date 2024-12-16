@@ -213,3 +213,43 @@ class ViewUsertoFlower(models.Model):
         ordering = ["id"]
         verbose_name = _("Увиденные цветы ")
         verbose_name_plural = _("Увиденные цветы")
+
+
+class Balloon(TranslatableModel):
+    translations = TranslatedFields(
+        name=models.CharField(_("Название цвета"), max_length=250, null=True, blank=True),
+        description=models.TextField(null=True, blank=True, verbose_name="Краткое описание"),
+    )
+    price = models.DecimalField(max_digits=10, null=True, blank=True, decimal_places=2, verbose_name="Цена")
+    discount_price = models.DecimalField(max_digits=10, null=True, blank=True, decimal_places=2,
+                                         verbose_name="Цена со скидкой")
+    cashback = models.IntegerField(default=10, null=True, blank=True, verbose_name="Кешбак")
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE, verbose_name="Категория")
+    author = models.ForeignKey(user, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Автор")
+    quantity = models.IntegerField(default=0, null=True, blank=True, verbose_name="Количество цветов")
+    in_stock = models.BooleanField(default=True, null=True, blank=True, verbose_name="В наличи или нет")
+    showcase_online = models.BooleanField(default=False, null=True, blank=True, verbose_name='Витрина Онлайн')
+    is_popular = models.BooleanField(default=False, null=True, blank=True, verbose_name='Популярное')
+    is_new = models.BooleanField(default=False, null=True, blank=True, verbose_name='Новинки')
+    stock_number = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True,
+                                       verbose_name="Процент акции")
+
+    objects = TranslatableManager()
+
+    def __str__(self):
+        return self.safe_translation_getter('name', any_language=True) or 'Безымянный'
+
+    class Meta:
+        verbose_name = "6. Воздушные шары"
+        verbose_name_plural = "6. Воздушные шары"
+
+
+class ImagesofBalloon(models.Model):
+    image = models.ImageField(upload_to='balloon_images/', null=True, blank=True, verbose_name="Изображение")
+    balloon = models.ForeignKey(Balloon, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Выбрать",
+                               related_name='images_balloon')
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.balloon.name

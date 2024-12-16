@@ -6,7 +6,7 @@ from apps.account.serializers import CustomUserDeatilSerializer
 from apps.flowers.models import (
     SizesofFlower, ImagesofFlower, QuantityofFlower,
     Flower, TopLevelCategory, Category, Review, CompoundyofFlower, PackageFlower, CountryFlower,
-    BannerCarousel, LiketoFlower, ViewUsertoFlower
+    BannerCarousel, LiketoFlower, ViewUsertoFlower, Balloon, ImagesofBalloon
 )
 from parler_rest.serializers import TranslatableModelSerializer
 from parler_rest.fields import TranslatedFieldsField
@@ -249,3 +249,26 @@ class ViewUsertoFlowerSerializer(serializers.ModelSerializer):
     class Meta:
         model = ViewUsertoFlower
         fields = ['id', 'flower']
+
+
+class ImagesofBalloonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagesofFlower
+        fields = ['id', 'image']
+
+
+class BalloonSerializer(TranslatableModelSerializer):
+    images_balloon = ImagesofBalloonSerializer(read_only=True, many=True)
+    translations = TranslatedFieldsField(shared_model=Balloon)
+
+    class Meta:
+        model = Balloon
+        fields = ['id', 'translations', 'images_balloon', 'price', 'discount_price',
+                  'category', 'author', 'in_stock', 'quantity', 'showcase_online',
+                  'is_popular', 'is_new', 'stock_number']
+
+    def get_text(self, instance):
+        return {
+            "en": instance.name_en,
+            "ru": instance.name_ru,
+        }

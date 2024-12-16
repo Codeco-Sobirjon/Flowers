@@ -13,7 +13,10 @@ urlpatterns = [
     path('banner-carousel/', BannerCarouselAPIView.as_view(), name='banner-carousel'),
     path('like/', LiketoFlowerCreateAPIView.as_view(), name='like-flower'),
     path('like/<int:flower_id>/', LiketoFlowerDeleteAPIView.as_view(), name='unlike-flower'),
-    path('flower-seen/', ViewUsertoFlowerListView.as_view(), name='flower-seer'),
+    path('flower-seen/', ViewUsertoFlowerListView.as_view(), name='flower-seen'),
+    path('balloon/', BalloonListAPIView.as_view(), name='balloon'),
+
+
 
     path('distinct-product-attributes/', DistinctProductAttributesView.as_view(),
          name='distinct-product-attributes'),

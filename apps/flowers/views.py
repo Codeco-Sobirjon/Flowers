@@ -11,13 +11,13 @@ from rest_framework import filters
 from apps.flowers.filters import FlowerFilter
 from apps.flowers.models import (
     Flower, TopLevelCategory, CountryFlower, PackageFlower, SizesofFlower, BannerCarousel, LiketoFlower,
-    ViewUsertoFlower,
+    ViewUsertoFlower, Balloon
 )
 from apps.flowers.pagination import FlowerPagination
 from apps.flowers.serializers import (
     FlowerListSerializer, ReviewSerializer, TopLevelCategoryWithSubCategoriesSerializer,
     FlowerDetailSerializer, CountryFlowerSerializer, PackageFlowerSerializer, SizesofFlowerSerializer,
-    BannerCarouselSerializer, LiketoFlowerSerializer, ViewUsertoFlowerSerializer
+    BannerCarouselSerializer, LiketoFlowerSerializer, ViewUsertoFlowerSerializer, BalloonSerializer
 )
 from apps.flowers.utils import get_distinct_product_attributes
 
@@ -32,7 +32,7 @@ class TopLevelCategoryListAPIView(APIView):
     )
     def get(self, request):
         categories = TopLevelCategory.objects.all()
-        serializer = TopLevelCategoryWithSubCategoriesSerializer(categories, many=True)
+        serializer = TopLevelCategoryWithSubCategoriesSerializer(categories, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -241,7 +241,7 @@ class FlowerListAPIView(APIView):
 
 
 class FlowerRetrieveUpdateAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     @swagger_auto_schema(
         operation_summary="Retrieve a Flower",
@@ -303,6 +303,16 @@ class PackageFlowerAPIView(APIView):
     def get(self, request):
         reviews = PackageFlower.objects.all()
         serializer = PackageFlowerSerializer(reviews, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class BalloonListAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    @swagger_auto_schema(tags=['Balloon all'])
+    def get(self, request):
+        reviews = Balloon.objects.all()
+        serializer = BalloonSerializer(reviews, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
