@@ -15,8 +15,9 @@ urlpatterns = [
     path('like/<int:flower_id>/', LiketoFlowerDeleteAPIView.as_view(), name='unlike-flower'),
     path('flower-seen/', ViewUsertoFlowerListView.as_view(), name='flower-seen'),
     path('balloon/', BalloonListAPIView.as_view(), name='balloon'),
-
-
+    path('balloon/detail/<int:id>/', BalloonDetailAPIView.as_view(), name='balloon-detail'),
+    path('like/balloon', LiketoBalloonCreateAPIView.as_view(), name='like-flower'),
+    path('like/balloon/<int:balloon_id>/', LiketoBalloonDeleteAPIView.as_view(), name='unlike-flower'),
 
     path('distinct-product-attributes/', DistinctProductAttributesView.as_view(),
          name='distinct-product-attributes'),

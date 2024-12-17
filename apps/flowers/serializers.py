@@ -6,7 +6,7 @@ from apps.account.serializers import CustomUserDeatilSerializer
 from apps.flowers.models import (
     SizesofFlower, ImagesofFlower, QuantityofFlower,
     Flower, TopLevelCategory, Category, Review, CompoundyofFlower, PackageFlower, CountryFlower,
-    BannerCarousel, LiketoFlower, ViewUsertoFlower, Balloon, ImagesofBalloon
+    BannerCarousel, LiketoFlower, ViewUsertoFlower, Balloon, ImagesofBalloon, LiketoBalloon
 )
 from parler_rest.serializers import TranslatableModelSerializer
 from parler_rest.fields import TranslatedFieldsField
@@ -253,22 +253,47 @@ class ViewUsertoFlowerSerializer(serializers.ModelSerializer):
 
 class ImagesofBalloonSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ImagesofFlower
+        model = ImagesofBalloon
         fields = ['id', 'image']
 
 
 class BalloonSerializer(TranslatableModelSerializer):
     images_balloon = ImagesofBalloonSerializer(read_only=True, many=True)
     translations = TranslatedFieldsField(shared_model=Balloon)
+    like = serializers.SerializerMethodField()
 
     class Meta:
         model = Balloon
         fields = ['id', 'translations', 'images_balloon', 'price', 'discount_price',
                   'category', 'author', 'in_stock', 'quantity', 'showcase_online',
-                  'is_popular', 'is_new', 'stock_number']
+                  'is_popular', 'is_new', 'stock_number', 'like']
 
     def get_text(self, instance):
         return {
             "en": instance.name_en,
             "ru": instance.name_ru,
         }
+
+    def get_like(self, obj):
+        user = self.context.get('request').user
+        if user.is_authenticated:
+            return LiketoBalloon.objects.filter(balloon=obj.id, author=user).exists()
+        return False
+
+
+class LiketoBalloonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LiketoBalloon
+        fields = ['id', 'balloon']
+
+    def create(self, validated_data):
+        user = self.context.get('request').user
+        balloon = validated_data.get('balloon')
+
+        if LiketoBalloon.objects.filter(balloon=balloon, author=user).exists():
+            raise serializers.ValidationError({'error': "You have already liked this flower"})
+
+        like_create = LiketoBalloon.objects.create(
+            **validated_data, author=user
+        )
+        return like_create

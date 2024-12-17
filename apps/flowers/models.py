@@ -253,3 +253,17 @@ class ImagesofBalloon(models.Model):
 
     def __str__(self):
         return self.balloon.name
+
+
+class LiketoBalloon(models.Model):
+    balloon = models.ForeignKey(Balloon, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Выбрать",
+                               related_name='balloon_like')
+    author = models.ForeignKey(user, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Автор")
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True, verbose_name="Дата публикации")
+
+    objects = models.Manager()
+
+    class Meta:
+        ordering = ["id"]
+        verbose_name = _("Лайк за воздушный шар ")
+        verbose_name_plural = _("Лайк за воздушный шар")

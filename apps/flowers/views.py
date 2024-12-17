@@ -11,13 +11,14 @@ from rest_framework import filters
 from apps.flowers.filters import FlowerFilter
 from apps.flowers.models import (
     Flower, TopLevelCategory, CountryFlower, PackageFlower, SizesofFlower, BannerCarousel, LiketoFlower,
-    ViewUsertoFlower, Balloon
+    ViewUsertoFlower, Balloon, LiketoBalloon
 )
 from apps.flowers.pagination import FlowerPagination
 from apps.flowers.serializers import (
     FlowerListSerializer, ReviewSerializer, TopLevelCategoryWithSubCategoriesSerializer,
     FlowerDetailSerializer, CountryFlowerSerializer, PackageFlowerSerializer, SizesofFlowerSerializer,
-    BannerCarouselSerializer, LiketoFlowerSerializer, ViewUsertoFlowerSerializer, BalloonSerializer
+    BannerCarouselSerializer, LiketoFlowerSerializer, ViewUsertoFlowerSerializer, BalloonSerializer,
+    LiketoBalloonSerializer
 )
 from apps.flowers.utils import get_distinct_product_attributes
 
@@ -309,10 +310,21 @@ class PackageFlowerAPIView(APIView):
 class BalloonListAPIView(APIView):
     permission_classes = [AllowAny]
 
-    @swagger_auto_schema(tags=['Balloon all'])
+    @swagger_auto_schema(tags=['Balloon'])
     def get(self, request):
         reviews = Balloon.objects.all()
         serializer = BalloonSerializer(reviews, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class BalloonDetailAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    @swagger_auto_schema(tags=['Balloon'])
+    def get(self, request, *args, **kwargs):
+
+        balloon = get_object_or_404(Balloon, id=kwargs.get('id'))
+        serializer = BalloonSerializer(balloon, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -439,4 +451,46 @@ class ViewUsertoFlowerListView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class LiketoBalloonCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(
+        tags=['Like Balloon'],
+        operation_description="Like a balloon. This will create a new like for the user.",
+        request_body=LiketoBalloonSerializer,
+        responses={
+            201: LiketoBalloonSerializer,
+            400: "Bad Request",
+        }
+    )
+    def post(self, request, *args, **kwargs):
+        serializer = LiketoBalloonSerializer(data=request.data, context={'request': request})
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LiketoBalloonDeleteAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(
+        tags=['Like Balloon'],
+        operation_description="Unlike a Balloon. This will delete the like of a user.",
+        responses={
+            204: "Like removed successfully",
+            404: "You haven't liked this flower",
+        }
+    )
+    def delete(self, request, *args, **kwargs):
+        balloon_id = kwargs.get('balloon_id')
+        try:
+            like = LiketoBalloon.objects.get(balloon=balloon_id, author=request.user)
+        except LiketoFlower.DoesNotExist:
+            return Response({"error": "You haven't liked this balloon"}, status=status.HTTP_404_NOT_FOUND)
+
+        like.delete()
+        return Response({"message": "Like removed successfully"}, status=status.HTTP_204_NO_CONTENT)
 
