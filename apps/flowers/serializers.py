@@ -231,9 +231,9 @@ class FlowerDetailSerializer(TranslatableModelSerializer):
         return serializer.data
 
     def get_like(self, obj):
-        user = self.context.get('request').user
-        if user.is_authenticated:
-            return LiketoFlower.objects.filter(flower=obj.id, author=user).exists()
+        request = self.context.get('request')
+        if request and hasattr(request, 'user') and request.user.is_authenticated:
+            return LiketoFlower.objects.filter(flower=obj.id, author=request.user).exists()
         return False
 
     def get_review_count(self, obj):
