@@ -257,10 +257,10 @@ class FlowerRetrieveUpdateAPIView(APIView):
             user = request.user
             if not ViewUsertoFlower.objects.filter(flower=flower, author=user).exists():
                 ViewUsertoFlower.objects.create(flower=flower, author=user)
-                serializer = FlowerDetailSerializer(flower)
+                serializer = FlowerDetailSerializer(flower, context={'request': request})
                 return Response(serializer.data, status=status.HTTP_200_OK)
         flower = get_object_or_404(Flower, id=pk)
-        serializer = FlowerDetailSerializer(flower)
+        serializer = FlowerDetailSerializer(flower, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
@@ -293,7 +293,7 @@ class ReviewListCreateAPIView(APIView):
         serializer = ReviewSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             review = serializer.save()
-            return Response(ReviewSerializer(review).data, status=status.HTTP_201_CREATED)
+            return Response(ReviewSerializer(review, context={'request': request}).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
