@@ -27,11 +27,11 @@ class TopLevelCategoryWithSubCategoriesSerializer(TranslatableModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
+    image = serializers.ImageField(use_url=True, required=True)
 
     class Meta:
         model = Review
-        fields = ['id', 'full_name', 'rating', 'content', 'image', 'created_at']
+        fields = ['id', 'full_name', 'rating', 'flower', 'content', 'image', 'created_at']
 
     def create(self, validated_data):
         review = Review.objects.create(
