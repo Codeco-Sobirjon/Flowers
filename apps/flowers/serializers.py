@@ -35,7 +35,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         review = Review.objects.create(
-            **validated_data, image=validated_data.get('image', None)
+            **validated_data
         )
         return review
 
