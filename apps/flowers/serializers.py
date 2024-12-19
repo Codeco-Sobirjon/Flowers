@@ -244,7 +244,7 @@ class FlowerDetailSerializer(TranslatableModelSerializer):
 
 
 class ViewUsertoFlowerSerializer(serializers.ModelSerializer):
-    flower = FlowerDetailSerializer(read_only=True, many=True)
+    flower = FlowerDetailSerializer(read_only=True)
 
     class Meta:
         model = ViewUsertoFlower
