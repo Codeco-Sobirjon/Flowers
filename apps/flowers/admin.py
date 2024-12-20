@@ -115,5 +115,5 @@ class ReviewAdmin(admin.ModelAdmin):
     search_fields = ('flower__name', 'full_name', 'content')
 
 
-@admin.site.register(BannerCarousel)
+admin.site.register(BannerCarousel)
 
