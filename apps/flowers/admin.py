@@ -116,5 +116,5 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 @admin.register(BannerCarousel)
-class BannerCarouselAdmin(admin.ModelAdmin):
+class BannerCarouselAdmin(TranslatableAdmin):
     list_display = ('title')
