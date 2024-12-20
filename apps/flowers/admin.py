@@ -3,7 +3,8 @@ from parler.admin import TranslatableAdmin
 from apps.flowers.models import (
     SizesofFlower, ImagesofFlower, QuantityofFlower,
     Flower, TopLevelCategory, Category, Review, CompoundyofFlower, PackageFlower,
-    CountryFlower, LiketoFlower, ViewUsertoFlower, Balloon, ImagesofBalloon, LiketoBalloon
+    CountryFlower, LiketoFlower, ViewUsertoFlower, Balloon, ImagesofBalloon, LiketoBalloon,
+    BannerCarousel
 )
 
 
@@ -113,3 +114,7 @@ class ReviewAdmin(admin.ModelAdmin):
     list_filter = ('rating', 'created_at')
     search_fields = ('flower__name', 'full_name', 'content')
 
+
+@admin.register(BannerCarousel)
+class BannerCarouselAdmin(admin.ModelAdmin):
+    list_display = ('title')

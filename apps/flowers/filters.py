@@ -18,7 +18,6 @@ class FlowerFilter(filters.FilterSet):
     stem_height = filters.NumberFilter(field_name="stem_height")
     volume = filters.NumberFilter(field_name="volume")
     head_outer_diameter = filters.NumberFilter(field_name="head_outer_diameter")
-
     min_price = filters.NumberFilter(field_name="price", lookup_expr="gte", label="Minimum price")
     max_price = filters.NumberFilter(field_name="price", lookup_expr="lte", label="Maximum price")
 

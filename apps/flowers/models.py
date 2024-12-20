@@ -183,8 +183,8 @@ class BannerCarousel(TranslatableModel):
 
     class Meta:
         ordering = ["id"]
-        verbose_name = _("5. Карусели баннеров")
-        verbose_name_plural = _("5. Карусели баннеров")
+        verbose_name = _("7. Карусели баннеров")
+        verbose_name_plural = _("7. Карусели баннеров")
 
 
 class LiketoFlower(models.Model):
