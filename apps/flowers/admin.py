@@ -115,5 +115,8 @@ class ReviewAdmin(admin.ModelAdmin):
     search_fields = ('flower__name', 'full_name', 'content')
 
 
-admin.site.register(BannerCarousel)
+@admin.register(BannerCarousel)
+class BannerCarouselAdmin(TranslatableAdmin):
+    list_display = ['title']
+    fields = ['title', 'text', 'image']
 
